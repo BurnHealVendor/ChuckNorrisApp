@@ -11,6 +11,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject
+    lateinit var viewModelFactory: JokesViewModelFactory
     lateinit var jokesRepo: JokesRepo
 
     private val myViewModel by lazy {

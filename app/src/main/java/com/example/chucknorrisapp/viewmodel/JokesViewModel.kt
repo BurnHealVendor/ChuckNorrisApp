@@ -18,17 +18,19 @@ class JokesViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    private val _jokes: MutableLiveData<JokesState> = MutableLiveData(JokesState.LOADING)
+    private val _jokesLiveData: MutableLiveData<JokesState> = MutableLiveData(JokesState.LOADING)
+    val jokesLiveData: LiveData<JokesState> get() = _jokesLiveData
 
-    val jokes: LiveData<JokesState> get() = _jokes
+    fun getRandomJoke() {
 
-    fun getRandomJoke(id: Int) {
+        _jokesLiveData.postValue(JokesState.LOADING)
+
         viewModelScope.launch(ioDispatcher) {
             try {
-                val response = jokesRepo.getRandom(id)
+                val response = jokesRepo.getRandom()
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        _jokes.postValue(JokesState.SUCCESS(it))
+                        _jokesLiveData.postValue(JokesState.SUCCESS(it))
                     } ?: throw Exception("Response is null")
                 }
                 else {
@@ -36,7 +38,7 @@ class JokesViewModel @Inject constructor(
                 }
             }
             catch (e: Exception) {
-                _jokes.postValue(JokesState.ERROR(e))
+                _jokesLiveData.postValue(JokesState.ERROR(e))
             }
         }
     }

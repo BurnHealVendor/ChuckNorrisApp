@@ -29,13 +29,23 @@
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
     <Button
-        android:id="@+id/neverendingListBtn"
+        android:id="@+id/changeNameBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Neverending List"
+        android:layout_marginTop="50dp"
+        android:text="Change Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/randomJokeBtn" />
+
+    <Button
+        android:id="@+id/neverendingListBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Neverending List"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changeNameBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
