@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/jokes_nav"
+    app:startDestination="@id/homeFrag">
+
+    <fragment
+        android:id="@+id/homeFrag"
+        android:name="com.example.chucknorrisapp.views.HomeFrag"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFrag_to_randomJokeFrag"
+            app:destination="@id/randomJokeFrag" />
+        <action
+            android:id="@+id/action_homeFrag_to_neverendingListFrag"
+            app:destination="@id/neverendingListFrag" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/randomJokeFrag"
+        android:name="com.example.chucknorrisapp.views.RandomJokeFrag"
+        android:label="Random Joke"
+        tools:layout="@layout/fragment_random_joke" >
+        <action
+            android:id="@+id/action_randomJokeFrag_to_changeNameFrag"
+            app:destination="@id/changeNameFrag" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/changeNameFrag"
+        android:name="com.example.chucknorrisapp.views.ChangeNameFrag"
+        android:label="Change Name"
+        tools:layout="@layout/fragment_change_name" >
+        <action
+            android:id="@+id/action_changeNameFrag_to_randomJokeFrag"
+            app:destination="@id/randomJokeFrag" />
+        <action
+            android:id="@+id/action_changeNameFrag_to_neverendingListFrag"
+            app:destination="@id/neverendingListFrag" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/neverendingListFrag"
+        android:name="com.example.chucknorrisapp.views.NeverendingListFrag"
+        android:label="Neverending List"
+        tools:layout="@layout/fragment_neverending_list" >
+        <action
+            android:id="@+id/action_neverendingListFrag_to_changeNameFrag"
+            app:destination="@id/changeNameFrag" />
+    </fragment>
+</navigation>
