@@ -6,16 +6,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chucknorrisapp.JokesApp
 import com.example.chucknorrisapp.R
 import com.example.chucknorrisapp.databinding.FragmentHomeBinding
+import com.example.chucknorrisapp.model.Jokes
+import com.example.chucknorrisapp.rest.JokesRepo
+import com.example.chucknorrisapp.utils.JokesState
+import com.example.chucknorrisapp.viewmodel.JokesViewModel
+import com.example.chucknorrisapp.viewmodel.JokesViewModelFactory
+import javax.inject.Inject
 
 class HomeFrag : Fragment() {
 
     private val binding by lazy {
         FragmentHomeBinding.inflate(layoutInflater)
+    }
+
+    @Inject
+    lateinit var jokesRepo: JokesRepo
+
+    private val jokesViewModel by lazy {
+        ViewModelProvider(requireActivity(), JokesViewModelFactory(jokesRepo))[JokesViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,22 +43,30 @@ class HomeFrag : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding.randomJokeBtn.setOnClickListener() {
-            AlertDialog.Builder(requireContext())
-                .setTitle("Random Joke")
-                .setMessage(jokesViewModel.getRandomJoke())
-                .setPositiveButton("DISMISS") { dialogInterface, i ->
-                    dialogInterface.dismiss()
+        jokesViewModel.jokesLiveData.observe(viewLifecycleOwner) {
+            when(it) {
+                is JokesState.SUCCESS<*> -> {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Random Joke")
+                        .setMessage((it.jokes as Jokes).joke)
+                        .setPositiveButton("DISMISS") { dialogInterface, i ->
+                            dialogInterface.dismiss()
+                        }
+                        .create()
+                        .show()
                 }
-                .create()
-                .show()
+            }
         }
 
-        binding.changeNameBtn.setOnClickListener() {
+        binding.randomJokeBtn.setOnClickListener {
+            jokesViewModel.getRandomJoke()
+        }
+
+        binding.changeNameBtn.setOnClickListener {
             findNavController().navigate(R.id.action_homeFrag_to_changeNameFrag)
         }
 
-        binding.neverendingListBtn.setOnClickListener() {
+        binding.neverendingListBtn.setOnClickListener {
             findNavController().navigate(R.id.action_homeFrag_to_neverendingListFrag)
         }
 
