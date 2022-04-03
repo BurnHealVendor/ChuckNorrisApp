@@ -15,22 +15,27 @@ import com.example.chucknorrisapp.adapter.JokesAdapter
 import com.example.chucknorrisapp.databinding.FragmentHomeBinding
 import com.example.chucknorrisapp.databinding.FragmentNeverendingListBinding
 import com.example.chucknorrisapp.model.Jokes
+import com.example.chucknorrisapp.rest.JokesRepo
 import com.example.chucknorrisapp.utils.JokesState
+import com.example.chucknorrisapp.viewmodel.JokesViewModel
 import com.example.chucknorrisapp.viewmodel.JokesViewModelFactory
 import retrofit2.Response
 import javax.inject.Inject
 
 class NeverendingListFrag : Fragment() {
 
+    @Inject
+    lateinit var jokesRepo: JokesRepo
+
     private val jokesViewModel by lazy {
-        ViewModelProvider(requireActivity(), viewModelFactory {  })
+        ViewModelProvider(requireActivity(), JokesViewModelFactory(jokesRepo))[JokesViewModel::class.java]
     }
 
     private val binding by lazy {
         FragmentNeverendingListBinding.inflate(layoutInflater)
     }
 
-    protected val jokesAdapter by lazy {
+    private val jokesAdapter by lazy {
         JokesAdapter()
     }
 
@@ -56,7 +61,7 @@ class NeverendingListFrag : Fragment() {
                     Toast.makeText(requireContext(), "Loading...", Toast.LENGTH_LONG).show()
                 }
                 is JokesState.SUCCESS<*> -> {
-                    val jokes = state.giveaways as List<Jokes>
+                    jokesAdapter.setData(state.jokes as List<Jokes>)
                 }
                 is JokesState.ERROR -> {
                     Toast.makeText(requireContext(), state.error.localizedMessage, Toast.LENGTH_LONG).show()

@@ -10,6 +10,12 @@ class JokesAdapter(
     private val jokes: MutableList<Jokes> = mutableListOf()
 ) : RecyclerView.Adapter<JokesViewHolder>() {
 
+    fun setData(newJokes: List<Jokes>) {
+        jokes.clear()
+        jokes.addAll(newJokes)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JokesViewHolder {
         return JokesViewHolder(
             JokeItemBinding.inflate(
